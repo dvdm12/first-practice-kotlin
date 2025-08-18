@@ -40,3 +40,8 @@ Thumbs.db
 # ==============================
 # Si tus scripts de Gradle o .kts son importantes, coméntalo
 # *.kts
+
+# =========================
+# Assets
+# =========================
+assets/
