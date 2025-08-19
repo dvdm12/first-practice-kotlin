@@ -68,8 +68,30 @@ class PatientController {
         } else false
     }
 
-    fun calculatePercentageByGender(): Double{
-        return 0.0
+    fun showPercentagePatientsByGender(){
+        val resultMale = calculatePercentageByMale()?: 0.0f
+        val resultFemale = calculatePercentageByFamele()?: 0.0f
+        val totalResult: String = "Male: %.2f%%, Female: %.2f%%".format(resultMale, resultFemale)
+
+        println(totalResult)
+    }
+
+    fun calculatePercentageByMale(): Float?{
+        if(patients.isEmpty()) return 0.0f
+
+        var amountByMale = patients
+        .count{it.gender.trim().uppercase().equals("M")}
+
+        return (amountByMale.toFloat()/patients.size)*100
+    }
+
+    fun calculatePercentageByFamele():Float?{
+        if(patients.isEmpty()) return 0.0f
+
+        var amountByFemale = patients
+        .count{it.gender.trim().uppercase().equals("F")}
+
+        return (amountByFemale.toFloat()/patients.size)*100
     }
 
     /** Delete - remove patient by CC */

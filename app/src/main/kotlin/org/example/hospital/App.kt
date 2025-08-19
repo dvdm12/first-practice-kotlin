@@ -7,13 +7,11 @@ import javax.print.Doc
     
 fun main(){
     val doctorController = DoctorController()
-    //val patientController = PatientController()
+    val patientController = PatientController()
     doctorController.initFromJson()
 
     doctorController.getAllDoctors().forEach{doctor 
         -> println("Name: ${doctor.name}, Speciality: ${doctor.specialty}, Salary: ${doctor.salary}")}
-
-    //iterateOnPatientList(patientController)
 
     println("watching each doctor by speciality")
     var specialty = "Psiquiatría"
@@ -23,8 +21,10 @@ fun main(){
     var totalSalary = doctorController.calculateAllSalary()
 
     println("Total of salary: $${totalSalary}")
-    
-    doctorController.showTheOldestDoctor()
+
+    patientController.loadPatientsFromJson()
+
+    patientController.showPercentagePatientsByGender()
 }
 
 fun getSalaryBySpeciality(doctorController:DoctorController){
