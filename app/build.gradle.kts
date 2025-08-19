@@ -9,9 +9,10 @@
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     alias(libs.plugins.kotlin.jvm)
+    kotlin("plugin.serialization") version "1.9.0"
 
     // Apply the application plugin to add support for building a CLI application in Java.
-    id 'application'
+    application
 }
 
 repositories {
@@ -21,15 +22,17 @@ repositories {
 
 dependencies {
     // This dependency is used by the application.
-    implementation libs.guava
+    implementation(libs.guava)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
 }
 
 testing {
     suites {
         // Configure the built-in test suite
-        test {
+        val test by getting(JvmTestSuite::class) {
             // Use JUnit Jupiter test framework
-            useJUnitJupiter('5.12.1')
+            useJUnitJupiter("5.12.1")
         }
     }
 }
@@ -37,11 +40,11 @@ testing {
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
 application {
     // Define the main class for the application.
-    mainClass = 'org.example.AppKt'
+    mainClass = "org.example.hospital.AppKt"
 }
