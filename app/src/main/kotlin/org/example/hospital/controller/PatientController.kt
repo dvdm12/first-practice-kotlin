@@ -47,6 +47,8 @@ class PatientController {
             val patient = Patient(name, cc, gender, email, phone, city)
             patients.add(patient)
         }
+
+        println("Uploaded ${patients.size} patients from JSON")
     }
 
 
