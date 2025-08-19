@@ -62,8 +62,11 @@ class DoctorController {
         .toInt()
     }
 
-    fun calculateAllSalary():Int{
-        return doctors.sumOf { it.salary }
+    fun calculateAllSalary(){
+        if(doctors.isEmpty()) println("There are not doctors")
+
+        var totalSalary = doctors.filter{ it.isActivated }.sumOf { it.salary }.toLong()
+        println("Total salary: $${totalSalary}")
     }
     
     // CRUD
@@ -110,4 +113,38 @@ class DoctorController {
             false
         }
     }
+
+    fun deactivateDoctorByLicense(license: String): Boolean {
+        try {
+            var licenseModified = license.trim().uppercase()
+            val doctor = doctors.find { it.licenseNumber == licenseModified }
+            if (doctor == null) {
+                println("Doctor not found.")
+                return false
+            }
+
+            val activeDoctors = doctors.count { it.isActivated }
+            if (activeDoctors <= 1 && doctor.isActivated) {
+                println("Cannot deactivate the last active doctor.")
+                return false
+            }
+
+            doctor.isActivated = false
+            return true
+        } catch (e: Exception) {
+            println("Error while deactivating doctor: ${e.message}")
+            return false
+        }
+    }
+
+    fun getPatientsByLicense(licenseNumber: String): List<Patient> {
+        val sanitizedLicense = licenseNumber.trim().uppercase() 
+
+        val doctor = doctors.find { 
+            it.licenseNumber.trim().uppercase() == sanitizedLicense
+        }
+
+        return doctor?.patients ?: emptyList()
+    }
+
 }

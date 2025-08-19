@@ -23,11 +23,14 @@ class HospitalView(
                 |Choose an option:
                 |1. List all doctors
                 |2. Show oldest doctor
-                |3. Show doctors by specialty
+                |3. Show doctors amount and salary by specialty
                 |4. Add a new doctor
                 |5. Add a new patient
                 |6. Assign patient to a doctor
                 |7. Show percentage of patients by gender
+                |8. Show patients by doctor license
+                |9. Desactivate Doctor
+                |10. Show all doctors salary
                 |0. Exit
                 """.trimMargin()
             )
@@ -42,7 +45,7 @@ class HospitalView(
             } catch (e: NoSuchElementException) {
                 println("No input detected. Exiting...")
                 break
-        }
+            }
 
             when (input) {
                 "1" -> listAllDoctors()
@@ -52,6 +55,9 @@ class HospitalView(
                 "5" -> addNewPatient()
                 "6" -> assignPatientToDoctor()
                 "7" -> patientController.showPercentagePatientsByGender()
+                "8" -> showPatientsByDoctorLicense()
+                "9" -> deactivateDoctorMenu() 
+                "10" -> doctorController.calculateAllSalary()
                 "0" -> {
                     println("Exiting...")
                     return
@@ -61,13 +67,33 @@ class HospitalView(
         }
     }
 
-
     private fun listAllDoctors() {
         val doctors = doctorController.getAllDoctors()
         if (doctors.isEmpty()) println("No doctors available.")
         else doctors.forEach {
-            println("Name: ${it.name}, Specialty: ${it.specialty}, Salary: ${it.salary}")
+            println("Name: ${it.name}, Specialty: ${it.specialty}, Salary: $${it.salary} pesos, Is Activated? ${it.isActivated} , First Year ${it.yearJoined.toString()}")
         }
+    }
+
+    private fun deactivateDoctorMenu() {
+        val doctors = doctorController.getAllDoctors()
+        if (doctors.isEmpty()) {
+            println("No doctors available.")
+            return
+        }
+
+        println("List of doctors:")
+        doctors.forEach { 
+            val status = if (it.isActivated) "Active" else "Inactive"
+            println("Name: ${it.name}, License: ${it.licenseNumber}, Status: $status")
+        }
+
+        print("Enter the license number of the doctor to deactivate: ")
+        val license = scanner.nextLine().trim()
+
+        val success = doctorController.deactivateDoctorByLicense(license)
+        if (success) println("Doctor with license '$license' has been deactivated.")
+        else println("Could not deactivate the doctor. Ensure at least one doctor remains active or check the license.")
     }
 
     private fun showDoctorsBySpecialty() {
@@ -89,7 +115,6 @@ class HospitalView(
         print("Enter specialty (name or number): ")
         val input = scanner.nextLine().trim()
 
-        // Permitir elegir por número o nombre
         val chosenSpecialty = input.toIntOrNull()?.let { index ->
             specialties.getOrNull(index - 1)
         } ?: specialties.find { it.equals(input, ignoreCase = true) }
@@ -109,9 +134,9 @@ class HospitalView(
         println("Enter doctor details:")
         print("Name: "); val name = scanner.nextLine()
         print("CC: "); val cc = scanner.nextLine()
-        print("Gender (M/F): "); val gender = scanner.nextLine()
+        print("Gender (M/F): "); val gender = scanner.nextLine().uppercase()
         print("Email: "); val email = scanner.nextLine()
-        print("License Number: "); val license = scanner.nextLine()
+        print("License Number: "); val license = scanner.nextLine().uppercase()
         print("Salary: "); val salary = scanner.nextLine().toIntOrNull() ?: 0
         print("Specialty: "); val specialty = scanner.nextLine()
         print("Year Joined (yyyy-MM-dd): "); val year = scanner.nextLine()
@@ -178,4 +203,31 @@ class HospitalView(
         if (success) println("Patient '${patient.name}' assigned to doctor with license '$license'.")
         else println("Doctor not found.")
     }
+
+    private fun showPatientsByDoctorLicense() {
+        val doctors = doctorController.getAllDoctors()
+        if (doctors.isEmpty()) {
+            println("No doctors available.")
+            return
+        }
+
+        println("List of doctors:")
+        doctors.forEach { println("Name: ${it.name}, License: ${it.licenseNumber}, Specialty: ${it.specialty}") }
+
+        print("Enter the license number of the doctor: ")
+        val license = scanner.nextLine().trim()
+
+        val patients = doctorController.getPatientsByLicense(license)
+
+        if (patients.isEmpty()) {
+            println("No patients found for doctor with license '$license'.")
+            return
+        }
+
+        println("Patients assigned to doctor with license '$license':")
+        patients.forEachIndexed { index, patient ->
+            println("${index + 1}. Name: ${patient.name}, CC: ${patient.cc}, Gender: ${patient.gender}, Email: ${patient.email}, Phone: ${patient.phone}, City: ${patient.city.name}")
+        }
+    }
+
 }
