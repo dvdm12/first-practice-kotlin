@@ -1,6 +1,7 @@
 package org.example.hospital.controller
 
 import models.Doctor
+import models.Patient
 import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -19,7 +20,7 @@ class DoctorController {
         }
 
         val jsonString = file.readText()
-        // Parseo muy simple suponiendo JSON de objetos separados por comas
+        
         val entries = jsonString.trim().removePrefix("[").removeSuffix("]").split("},").map { it.trim() + "}" }
 
         for (entry in entries) {
@@ -72,4 +73,15 @@ class DoctorController {
     }
 
     fun getAllDoctors(): List<Doctor> = doctors.toList()
+
+
+    fun addPatientToDoctor(licenseNumber: String, patient: Patient): Boolean {
+        val doctor = doctors.find { it.licenseNumber == licenseNumber }
+        return if (doctor != null) {
+            doctor.patients.add(patient)
+            true
+        } else {
+            false
+        }
+    }
 }

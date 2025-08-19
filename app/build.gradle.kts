@@ -24,6 +24,7 @@ dependencies {
     // This dependency is used by the application.
     implementation(libs.guava)
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("org.json:json:20230227")
 
 }
 
