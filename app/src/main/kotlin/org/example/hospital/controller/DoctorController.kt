@@ -5,6 +5,8 @@ import models.Patient
 import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import org.json.JSONArray
+import org.json.JSONObject
 
 class DoctorController {
 
@@ -15,41 +17,49 @@ class DoctorController {
         val path = "src/main/resources/doctors.json"
         val file = File(path)
         if (!file.exists()) {
-            println("file doctors.json did not found out")
+            println("file doctors.json not found")
             return
         }
 
         val jsonString = file.readText()
-        
-        val entries = jsonString.trim().removePrefix("[").removeSuffix("]").split("},").map { it.trim() + "}" }
+        val jsonArray = JSONArray(jsonString) 
 
-        for (entry in entries) {
-            val name = Regex("\"name\"\\s*:\\s*\"([^\"]+)\"").find(entry)?.groupValues?.get(1) ?: ""
-            val cc = Regex("\"cc\"\\s*:\\s*\"([^\"]+)\"").find(entry)?.groupValues?.get(1) ?: ""
-            val gender = Regex("\"gender\"\\s*:\\s*\"([^\"]+)\"").find(entry)?.groupValues?.get(1) ?: ""
-            val email = Regex("\"email\"\\s*:\\s*\"([^\"]+)\"").find(entry)?.groupValues?.get(1) ?: ""
-            val licenseNumber = Regex("\"licenseNumber\"\\s*:\\s*\"([^\"]+)\"").find(entry)?.groupValues?.get(1) ?: ""
-            val salary = Regex("\"salary\"\\s*:\\s*(\\d+)").find(entry)?.groupValues?.get(1)?.toInt() ?: 0
-            val specialty = Regex("\"specialty\"\\s*:\\s*\"([^\"]+)\"").find(entry)?.groupValues?.get(1) ?: ""
-            val yearJoinedStr = Regex("\"yearJoined\"\\s*:\\s*\"([^\"]+)\"").find(entry)?.groupValues?.get(1) ?: "2000-01-01"
-            val isActivated = Regex("\"isActivated\"\\s*:\\s*(true|false)").find(entry)?.groupValues?.get(1)?.toBoolean() ?: true
+        for (i in 0 until jsonArray.length()) {
+            val jsonObject = jsonArray.getJSONObject(i)
 
             val doctor = Doctor(
-                name = name,
-                cc = cc,
-                gender = gender,
-                email = email,
-                licenseNumber = licenseNumber,
-                salary = salary,
-                specialty = specialty,
-                yearJoined = LocalDate.parse(yearJoinedStr, formatter),
-                isActivated = isActivated
+                name = jsonObject.optString("name", ""),
+                cc = jsonObject.optString("cc", ""),
+                gender = jsonObject.optString("gender", ""),
+                email = jsonObject.optString("email", ""),
+                licenseNumber = jsonObject.optString("licenseNumber", ""),
+                salary = jsonObject.optInt("salary", 0),
+                specialty = jsonObject.optString("specialty", ""),
+                yearJoined = LocalDate.parse(jsonObject.optString("yearJoined", "2000-01-01"), formatter),
+                isActivated = jsonObject.optBoolean("isActivated", true)
             )
 
             doctors.add(doctor)
         }
 
-        println("it's been uploaded ${doctors.size} doctors from JSON")
+        println("Uploaded ${doctors.size} doctors from JSON")
+    }
+
+    fun getDoctorsAmountBySpeciality(specialty:String): Int {
+        return doctors
+        .filter { it.specialty.equals(specialty) }
+        .toList().size
+    }
+
+    fun calculateDoctorsSalaryBySpeciality(specialty:String): Int{
+        return doctors
+        .filter{it.specialty.equals(specialty)}
+        .sumOf { it.salary }
+        .toInt()
+    }
+
+    fun calculateAllSalary():Int{
+        return doctors.sumOf { it.salary }
     }
     
     // CRUD
@@ -65,6 +75,18 @@ class DoctorController {
         val index = doctors.indexOfFirst { it.licenseNumber == licenseNumber }
         if (index != -1) {
             doctors[index] = updatedDoctor
+        }
+    }
+
+    fun showTheOldestDoctor(){
+        var doctor:Doctor? = doctors.minByOrNull { it.yearJoined }
+        
+        doctor?.let {
+            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy") 
+            val joinedString = it.yearJoined.format(formatter)
+            println("The oldest doctor is: ${it.name}, they were introduced since: $joinedString")
+        } ?: run {
+            println("No doctors available")
         }
     }
 

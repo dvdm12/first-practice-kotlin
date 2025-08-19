@@ -68,6 +68,10 @@ class PatientController {
         } else false
     }
 
+    fun calculatePercentageByGender(): Double{
+        return 0.0
+    }
+
     /** Delete - remove patient by CC */
     fun deletePatient(cc: String): Boolean {
         val patient = patients.find { it.cc == cc }

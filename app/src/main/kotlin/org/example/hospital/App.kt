@@ -3,16 +3,34 @@ package org.example.hospital
 import org.example.hospital.controller.DoctorController
 import org.example.hospital.controller.PatientController
 import models.Patient
+import javax.print.Doc
     
 fun main(){
     val doctorController = DoctorController()
-    val patientController = PatientController()
+    //val patientController = PatientController()
     doctorController.initFromJson()
 
     doctorController.getAllDoctors().forEach{doctor 
-        -> println("Name: ${doctor.name}, Speciality: ${doctor.specialty}, Salary: ${doctor.salary}")} 
+        -> println("Name: ${doctor.name}, Speciality: ${doctor.specialty}, Salary: ${doctor.salary}")}
 
-    iterateOnPatientList(patientController)
+    //iterateOnPatientList(patientController)
+
+    println("watching each doctor by speciality")
+    var specialty = "Psiquiatría"
+    var amount = doctorController.getDoctorsAmountBySpeciality(specialty)
+    println("Speciality: ${specialty}, Amount of doctors: ${amount}}")
+    
+    var totalSalary = doctorController.calculateAllSalary()
+
+    println("Total of salary: $${totalSalary}")
+    
+    doctorController.showTheOldestDoctor()
+}
+
+fun getSalaryBySpeciality(doctorController:DoctorController){
+    for(doctor in doctorController.getAllDoctors()){
+        println(doctorController.calculateDoctorsSalaryBySpeciality(doctor.specialty))
+    }
 }
 
 fun iterateOnPatientList(controller: PatientController) {
