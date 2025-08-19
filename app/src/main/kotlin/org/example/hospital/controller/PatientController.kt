@@ -4,6 +4,7 @@ import models.Patient
 import models.City
 import models.Street
 import java.io.File
+import java.io.FileNotFoundException
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -14,7 +15,12 @@ class PatientController {
     
 
     fun loadPatientsFromJson() {
-        val fileText = File(filePath).readText()
+        
+        val inputStream = this::class.java.getResourceAsStream("/patients.json")
+            ?: throw FileNotFoundException("patients.json not found in resources")
+        
+        val fileText = inputStream.bufferedReader().use { it.readText() }
+        
         val jsonArray = JSONArray(fileText)
 
         for (i in 0 until jsonArray.length()) {

@@ -2,7 +2,6 @@ package org.example.hospital.controller
 
 import models.Doctor
 import models.Patient
-import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import org.json.JSONArray
@@ -14,14 +13,15 @@ class DoctorController {
     private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     fun initFromJson() {
-        val path = "src/main/resources/doctors.json"
-        val file = File(path)
-        if (!file.exists()) {
-            println("file doctors.json not found")
-            return
-        }
+    
+        val inputStream = this::class.java.getResourceAsStream("/doctors.json")
+            ?: run {
+                println("file doctors.json not found in resources")
+                return
+            }
 
-        val jsonString = file.readText()
+        val jsonString = inputStream.bufferedReader().use { it.readText() }
+
         val jsonArray = JSONArray(jsonString) 
 
         for (i in 0 until jsonArray.length()) {
@@ -35,15 +35,19 @@ class DoctorController {
                 licenseNumber = jsonObject.optString("licenseNumber", ""),
                 salary = jsonObject.optInt("salary", 0),
                 specialty = jsonObject.optString("specialty", ""),
-                yearJoined = LocalDate.parse(jsonObject.optString("yearJoined", "2000-01-01"), formatter),
+                yearJoined = LocalDate.parse(
+                jsonObject.optString("yearJoined", "2000-01-01"), 
+                formatter
+            ),
                 isActivated = jsonObject.optBoolean("isActivated", true)
-            )
+            )   
 
             doctors.add(doctor)
         }
 
         println("Uploaded ${doctors.size} doctors from JSON")
     }
+
 
     fun getDoctorsAmountBySpeciality(specialty:String): Int {
         return doctors

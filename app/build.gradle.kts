@@ -38,6 +38,15 @@ testing {
     }
 }
 
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "org.example.hospital.AppKt"
+    }
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
