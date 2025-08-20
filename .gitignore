@@ -24,6 +24,4 @@ settings.gradle.kts
 !app/build/
 !/app/build/libs/
 
-assets/
-
 .kotlin/

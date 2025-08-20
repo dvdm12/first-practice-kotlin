@@ -10,6 +10,10 @@
 
 * Exercise: #2
 
+## Class Diagram
+
+![Class Diagram](assets/diagramClasses.jpg)
+
 ## Description
 
 This is a console-based Hospital Management System implemented in Kotlin. It allows managing doctors and patients with the following functionalities:
@@ -57,9 +61,7 @@ The application will start in the terminal, providing an interactive menu for th
 * `assets/appDiagram.png` - UML class diagram of the system.
 
 
-## Class Diagram
 
-![Class Diagram](assets/diagramClasses.jpg)
 
 
 
