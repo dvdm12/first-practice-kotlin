@@ -6,7 +6,7 @@
 
 ## Class Diagram
 
-![Class Diagram](assets/appDiagram.svg)
+![Class Diagram](assets/diagramClasses.jpg)
 
 ## Description
 
