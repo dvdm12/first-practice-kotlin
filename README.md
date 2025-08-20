@@ -3,6 +3,9 @@
 **Author:** David Mantilla Aviles  
 **Code:** 240220212015  
 
+**Author:** Mariana Osorio Hernandez  
+**Code:** 24020211026
+
 This is a **console application** in Kotlin to convert between decimal and binary numbers using **recursion**.  
 
 ---
