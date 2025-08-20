@@ -1,7 +1,7 @@
 
 //David Mantilla, Cod: 240220212015
 //Juan Caicedo, Cod: 240220232033
-
+// Mariana Osorio, cod: 240220211026
 package first_excercice
 
 import kotlin.text.lowercase
