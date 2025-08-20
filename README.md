@@ -1,12 +1,14 @@
 # Hospital Management System - Console Application
 
+## Authors
+
+* **David Mantilla Aviles** – Code: 240220212015
+* **Mariana Osorio Hernandez** – Code: 24020211026
+* **Juan Caicedo** – Code: 240220232033
+
 ## Exercise
 
 * Exercise: #2
-
-## Class Diagram
-
-![Class Diagram](./assets/diagramClasses.jpg)
 
 ## Description
 
@@ -54,10 +56,11 @@ The application will start in the terminal, providing an interactive menu for th
 * `resources/` - JSON files for initial data (`doctors.json`, `patients.json`).
 * `assets/appDiagram.png` - UML class diagram of the system.
 
-## Authors
 
-* **David Mantilla Aviles** – Code: 240220212015
-* **Mariana Osorio Hernandez** – Code: 24020211026
-* **Juan Caicedo** – Code: 240220232033
+## Class Diagram
+
+![Class Diagram](assets/diagramClasses.jpg)
+
+
 
 
