@@ -15,7 +15,7 @@ class HospitalView(
     private val scanner = Scanner(System.`in`)
 
     fun start() {
-        println("Welcome to the Hospital Management System")
+        println("Welcome to the Hospital Management System.")
 
         while (true) {
             println(
