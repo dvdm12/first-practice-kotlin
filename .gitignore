@@ -1,0 +1,27 @@
+# Ignorar carpetas de Gradle
+.gradle/
+build/
+gradle/
+out/
+
+# Ignorar archivos generados por el sistema
+*.class
+*.log
+*.tmp
+
+# Ignorar scripts de Gradle (opcional si no quieres versionarlos)
+gradlew
+gradlew.bat
+gradle.properties
+settings.gradle
+settings.gradle.kts
+
+# Ignorar todo lo demás excepto README.md y .jar
+*
+!.gitignore
+!README.md
+!*.jar
+
+assets/
+
+.kotlin/
