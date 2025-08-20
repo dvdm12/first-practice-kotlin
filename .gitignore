@@ -1,6 +1,5 @@
 # Ignorar carpetas de Gradle
 .gradle/
-build/
 gradle/
 out/
 
