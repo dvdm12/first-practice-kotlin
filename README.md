@@ -4,7 +4,7 @@
 
 * Exercise: #2
 
-## Class Diagram
+## Class Diagram!
 
 ![Class Diagram](assets/diagramClasses.jpg)
 
