@@ -15,12 +15,14 @@ gradlew.bat
 gradle.properties
 settings.gradle
 settings.gradle.kts
+/app/build/*
 
 # Ignorar todo lo demás excepto README.md y .jar
 !.gitignore
 !README.md
 !*.jar
 !app/build/
+!/app/build/libs/
 
 assets/
 
