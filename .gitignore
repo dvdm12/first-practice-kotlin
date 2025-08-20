@@ -17,7 +17,6 @@ settings.gradle
 settings.gradle.kts
 
 # Ignorar todo lo demás excepto README.md y .jar
-*
 !.gitignore
 !README.md
 !*.jar
