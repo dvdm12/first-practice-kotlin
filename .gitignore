@@ -1,6 +1,7 @@
 # Ignorar carpetas de Gradle
 .gradle/
 gradle/
+build/
 out/
 
 # Ignorar archivos generados por el sistema
@@ -19,6 +20,7 @@ settings.gradle.kts
 !.gitignore
 !README.md
 !*.jar
+!app/build/
 
 assets/
 
